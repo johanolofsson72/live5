@@ -41,3 +41,22 @@ Backupen kör varje natt kl 02:00 med:
 - `.bak` → `.zip`
 - Automatisk rensning av äldre filer
 
+
+
+## 💾 Backup av MySQL
+
+Backup-ACA:n (`mysql-backup`) skapar varje natt:
+- En zip-fil: `backup-YYYY-MM-DD.zip`
+- Plats: `/mnt/afs/backups/mysql/`
+- Bevarar senaste **7 dagarna**
+
+Deploy:
+```bash
+pwsh ./mysql/deploy-mysql-backup.ps1
+```
+
+Backupen kör varje natt kl 02:00 med:
+- `mysqldump` mot `mysql`
+- `.sql` → `.zip`
+- Automatisk rensning av äldre filer
+
