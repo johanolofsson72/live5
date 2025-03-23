@@ -60,3 +60,25 @@ Backupen kör varje natt kl 02:00 med:
 - `.sql` → `.zip`
 - Automatisk rensning av äldre filer
 
+
+
+## 🧪 Test: Minimal API för filuppladdning
+
+Test-ACA:n låter dig POST:a en fil till `/upload` och sparar den till `/mnt/afs/uploads`.
+
+Deploy:
+```bash
+pwsh ./test/deploy-test.ps1
+```
+
+Bygg image, ladda upp till ACR:
+```bash
+docker build -t test:latest .
+docker tag test:latest <your-acr-name>.azurecr.io/test:latest
+docker push <your-acr-name>.azurecr.io/test:latest
+```
+
+Skicka fil via curl:
+```bash
+curl -F "file=@/path/to/yourfile.txt" https://<app-url>/upload
+```
