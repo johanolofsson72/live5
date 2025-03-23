@@ -29,7 +29,7 @@ resource testApp 'Microsoft.App/containerApps@2023-05-01' = {
       containers: [
         {
           name: appName
-          image: '<your-acr-name>.azurecr.io/test:latest'
+          image: 'testacr.azurecr.io/test:latest'
           resources: {
             cpu: 0.5
             memory: '0.5Gi'

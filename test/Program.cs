@@ -1,9 +1,22 @@
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Upload API", Version = "v1" });
+});
+builder.Services.AddDirectoryBrowser();
+
 var app = builder.Build();
 
-var uploadPath = "/mnt/afs/uploads";
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
-// Ensure upload path exists
+var uploadPath = "/mnt/afs/uploads";
 Directory.CreateDirectory(uploadPath);
 
 app.MapPost("/upload", async (HttpRequest request) =>
@@ -25,6 +38,31 @@ app.MapPost("/upload", async (HttpRequest request) =>
     }
 
     return Results.Ok("File uploaded");
-});
+})
+.WithName("UploadFile")
+.WithOpenApi();
+
+app.MapGet("/files", () =>
+{
+    var files = Directory.GetFiles(uploadPath)
+        .Select(Path.GetFileName)
+        .ToArray();
+
+    return Results.Ok(files);
+})
+.WithName("ListFiles")
+.WithOpenApi();
+
+app.MapGet("/files/{filename}", (string filename) =>
+{
+    var filePath = Path.Combine(uploadPath, filename);
+    if (!System.IO.File.Exists(filePath))
+        return Results.NotFound();
+
+    var contentType = "application/octet-stream";
+    return Results.File(filePath, contentType, fileDownloadName: filename);
+})
+.WithName("DownloadFile")
+.WithOpenApi();
 
 app.Run();
