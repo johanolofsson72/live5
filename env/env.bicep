@@ -79,3 +79,14 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
     ]
   }
 }
+
+module backup 'backup.bicep' = {
+  name: 'live5-backup'
+  scope: resourceGroup()
+  params: {
+    location: location
+    storageAccountName: storageAccountName
+    fileShareName: fileShareName
+  }
+}
+
