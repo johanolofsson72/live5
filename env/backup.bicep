@@ -1,11 +1,14 @@
 param location string
-param vaultName string = 'live5vault'
-param policyName string = 'live5-dailypolicy'
+param vaultName string
+param policyName string
 
 // Recovery Services Vault
 resource vault 'Microsoft.RecoveryServices/vaults@2022-01-01' = {
   name: vaultName
   location: location
+  sku: {
+    name: 'Standard'
+  }
   properties: {}
 }
 

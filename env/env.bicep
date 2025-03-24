@@ -1,9 +1,11 @@
-param location string = 'swedencentral'
-param environmentName string = 'live5env'
-param storageAccountName string = 'live5storage'
-param fileShareName string = 'afs'
-param workspaceName string = 'live5logs'
-param insightsName string = 'live5appinsights'
+param location string
+param environmentName string
+param storageAccountName string
+param fileShareName string
+param workspaceName string
+param insightsName string
+param vaultName string
+param policyName string
 
 var workspaceKey = logAnalyticsWorkspace.listKeys().primarySharedKey
 
@@ -72,11 +74,13 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   }
 }
 
+// Backup module
 module backup 'backup.bicep' = {
-  name: 'live5-backup'
+  name: 'live5backup'
   scope: resourceGroup()
   params: {
     location: location
+    vaultName: vaultName
+    policyName: policyName
   }
 }
-

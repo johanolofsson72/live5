@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "swedencentral"
+        },
+        "environmentName": {
+            "value": "live5env"
+        },
+        "storageAccountName": {
+            "value": "live5storage" 
+        },
+        "fileShareName": {
+            "value": "afs"
+        },
+        "workspaceName": {
+            "value": "live5logs"
+        },
+        "insightsName": {
+            "value": "live5appinsights"
+        },
+        "vaultName": {
+            "value": "live5vault"
+        },
+        "policyName": {
+            "value": "live5dailypolicy"
+        }
+    }
+}
