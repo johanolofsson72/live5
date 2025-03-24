@@ -14,7 +14,8 @@ resource vault 'Microsoft.RecoveryServices/vaults@2022-01-01' = {
 
 // Backup Policy for Azure File Share
 resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-01-01' = {
-  name: '${vault.name}/${policyName}'
+  name: policyName
+  parent: vault
   properties: {
     backupManagementType: 'AzureStorage'
     workLoadType: 'AzureFileShare'
