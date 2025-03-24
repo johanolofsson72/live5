@@ -1,7 +1,7 @@
 param (
     [string]$resourceGroup = "live5-rg",
     [string]$location = "swedencentral",
-    [string]$acrName = "testacr"
+    [string]$acrName = "live5testacr"
 )
 
 $ErrorActionPreference = "Stop"

@@ -1,0 +1,10 @@
+template:
+  volumes:
+    - name: upload-vol
+      storageType: AzureFile
+      storageName: live5storage
+  containers:
+    - name: test
+      volumeMounts:
+        - volumeName: upload-vol
+          mountPath: /mnt/afs/uploads

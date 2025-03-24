@@ -1,10 +1,9 @@
 param location string = 'swedencentral'
 param environmentName string = 'live5env'
-param storageAccountName string = 'live5storage'
-param fileShareName string = 'afs'
 param appName string = 'test'
+param acrServer string = 'live5testacr.azurecr.io'
 
-resource testApp 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
   properties: {
@@ -14,36 +13,29 @@ resource testApp 'Microsoft.App/containerApps@2023-05-01' = {
         external: true
         targetPort: 8080
       }
-      volumes: [
+      registries: [
         {
-          name: 'upload-vol'
-          storageType: 'AzureFile'
-          storageAccountName: storageAccountName
-          shareName: fileShareName
-          mountPath: '/mnt/afs/uploads'
-          subPath: 'uploads'
+          server: acrServer
+          identity: 'system'
         }
       ]
+    }
+    identity: {
+      type: 'SystemAssigned'
     }
     template: {
       containers: [
         {
           name: appName
-          image: 'testacr.azurecr.io/test:latest'
+          image: '${acrServer}/test:latest'
           resources: {
-            cpu: 0.5
+            cpu: 0.25
             memory: '0.5Gi'
           }
-          volumeMounts: [
-            {
-              volumeName: 'upload-vol'
-              mountPath: '/mnt/afs/uploads'
-            }
-          ]
         }
       ]
       scale: {
-        minReplicas: 1
+        minReplicas: 0
         maxReplicas: 1
       }
     }

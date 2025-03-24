@@ -1,7 +1,7 @@
 # remove.ps1 - Tar bort hela live5-resursgruppen
 
 param (
-    [string]$resourceGroup = "live5-rg"
+    [string]$resourceGroup = "live5rg"
 )
 
 $ErrorActionPreference = "Stop"

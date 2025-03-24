@@ -1,7 +1,7 @@
 # deploy-env.ps1 - Skapar ACR, Storage, File Share och ACA Environment
 
 param (
-    [string]$resourceGroup = "live5-rg",
+    [string]$resourceGroup = "live5rg",
     [string]$location = "swedencentral",
     [string]$bicepFile = "./env/env.bicep"
 )

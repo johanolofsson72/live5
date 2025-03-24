@@ -17,7 +17,7 @@ resource edgeBackup 'Microsoft.App/containerApps@2023-05-01' = {
       secrets: [
         {
           name: 'sql-sa-password'
-          value: 'D4yCru!s3r2025!'
+          value: 'Mitt5tarkal0senOr7'
         }
       ]
       environmentVariables: [
