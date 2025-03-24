@@ -1,9 +1,7 @@
 $parameterFile = "./env/parameters.json"
 
-# Hämta resursgrupp från skriptet
 $rg = "live5rg"
 
-# Skapa resursgruppen om den inte finns
 $rgExists = az group exists --name $rg | ConvertFrom-Json
 if (-not $rgExists) {
     Write-Host "📁 Skapar resursgruppen '$rg'..."
