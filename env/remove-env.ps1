@@ -1,5 +1,5 @@
 # Ta bort hela live5-miljön (Resource Group)
-$resourceGroup = "live5-rg"
+$resourceGroup = "live5rg"
 
 Write-Host "🗑️ Tar bort hela resursgruppen '$resourceGroup'..."
 az group delete --name $resourceGroup --yes --no-wait
