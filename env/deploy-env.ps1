@@ -8,7 +8,7 @@ $policyName = "live5-dailypolicy"
 Write-Host "🌍 Deploying base infra (env.bicep)..."
 az deployment group create `
   --resource-group $rg `
-  --template-file ./env.bicep `
+  --template-file ./env/env.bicep `
   --parameters location=$location
 
 # Kontrollera om storagekontot redan är registrerat för backup
