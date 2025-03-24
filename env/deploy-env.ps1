@@ -5,6 +5,13 @@ $storageAccount = "live5storage"
 $fileShare = "afs"
 $policyName = "live5-dailypolicy"
 
+# Skapa resursgruppen om den inte finns
+$rgExists = az group exists --name $rg | ConvertFrom-Json
+if (-not $rgExists) {
+    Write-Host "📁 Skapar resursgruppen '$rg'..."
+    az group create --name $rg --location $location | Out-Null
+}
+
 Write-Host "🌍 Deploying base infra (env.bicep)..."
 az deployment group create `
   --resource-group $rg `

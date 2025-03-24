@@ -77,8 +77,6 @@ module backup 'backup.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    storageAccountName: storageAccountName
-    fileShareName: fileShareName
   }
 }
 
