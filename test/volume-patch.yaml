@@ -5,6 +5,7 @@ template:
       storageName: live5storage
   containers:
     - name: test
+      image: live5testacr.azurecr.io/test:latest
       volumeMounts:
         - volumeName: upload-vol
           mountPath: /mnt/afs/uploads

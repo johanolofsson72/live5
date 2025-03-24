@@ -1,5 +1,5 @@
 param (
-    [string]$resourceGroup = "live5-rg",
+    [string]$resourceGroup = "live5rg",
     [string]$location = "swedencentral",
     [string]$acrName = "live5testacr"
 )

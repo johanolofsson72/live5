@@ -5,7 +5,6 @@ param fileShareName string = 'afs'
 param workspaceName string = 'live5logs'
 param insightsName string = 'live5appinsights'
 
-@secure()
 var workspaceKey = logAnalyticsWorkspace.listKeys().primarySharedKey
 
 // Storage account
@@ -70,5 +69,13 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
         sharedKey: workspaceKey
       }
     }
+    storageAccounts: [
+      {
+        name: storageAccountName
+        accountName: storage.name
+        shareName: fileShareName
+        accessKey: listKeys(storage.id, storage.apiVersion).keys[0].value
+      }
+    ]
   }
 }
