@@ -1,6 +1,4 @@
 param location string
-param storageAccountName string
-param fileShareName string
 param vaultName string = 'live5vault'
 param policyName string = 'live5-dailypolicy'
 
