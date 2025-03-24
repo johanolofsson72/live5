@@ -1,8 +1,7 @@
 param location string
-param vaultName string
-param policyName string
+param vaultName string = 'live5vault'
+param policyName string = 'live5dailypolicy'
 
-// Recovery Services Vault
 resource vault 'Microsoft.RecoveryServices/vaults@2022-01-01' = {
   name: vaultName
   location: location
@@ -12,7 +11,6 @@ resource vault 'Microsoft.RecoveryServices/vaults@2022-01-01' = {
   properties: {}
 }
 
-// Backup Policy for Azure File Share
 resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-01-01' = {
   name: policyName
   parent: vault
@@ -23,7 +21,7 @@ resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-01-
       schedulePolicyType: 'SimpleSchedulePolicy'
       scheduleRunFrequency: 'Daily'
       scheduleRunTimes: [
-        '2024-01-01T07:30:00Z' // 07:30 UTC
+        '2024-01-01T07:30:00Z'
       ]
     }
     retentionPolicy: {

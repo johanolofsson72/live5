@@ -9,7 +9,6 @@ param policyName string
 
 var workspaceKey = logAnalyticsWorkspace.listKeys().primarySharedKey
 
-// Storage account
 resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
@@ -22,7 +21,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
-// File share (med parent-syntax)
 resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2022-09-01' = {
   name: 'default'
   parent: storage
@@ -36,7 +34,6 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2022-0
   }
 }
 
-// Log Analytics Workspace
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: workspaceName
   location: location
@@ -48,7 +45,6 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
   }
 }
 
-// Application Insights kopplad till workspace
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: insightsName
   location: location
@@ -59,7 +55,6 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-// ACA Environment
 resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: environmentName
   location: location
@@ -73,8 +68,6 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
     }
   }
 }
-
-// Backup module
 module backup 'backup.bicep' = {
   name: 'live5backup'
   scope: resourceGroup()
