@@ -1,18 +1,7 @@
-# remove.ps1 - Tar bort hela live5-resursgruppen
+# Ta bort hela live5-miljön (Resource Group)
+$resourceGroup = "live5rg"
 
-param (
-    [string]$resourceGroup = "live5rg"
-)
-
-$ErrorActionPreference = "Stop"
-
-Write-Host "⚠️  Du är på väg att ta bort resursgruppen: $resourceGroup"
-$confirm = Read-Host "Vill du fortsätta? (ja/nej)"
-if ($confirm -ne "ja") {
-    Write-Host "❌ Avbrutet."
-    exit
-}
-
+Write-Host "🗑️ Tar bort hela resursgruppen '$resourceGroup'..."
 az group delete --name $resourceGroup --yes --no-wait
 
-Write-Host "🗑️  Radering påbörjad för resursgruppen '$resourceGroup'."
+Write-Host "⏳ Borttagning initierad. Det kan ta några minuter."
