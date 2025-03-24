@@ -7,12 +7,12 @@ param policyName string = 'live5-dailypolicy'
 resource vault 'Microsoft.RecoveryServices/vaults@2022-01-01' = {
   name: vaultName
   location: location
-  properties: {
-    sku: {
-      name: 'Standard'
-    }
+  sku: {
+    name: 'Standard'
   }
+  properties: {}
 }
+
 
 resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-01-01' = {
   name: '${vault.name}/${policyName}'

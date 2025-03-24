@@ -69,14 +69,6 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
         sharedKey: workspaceKey
       }
     }
-    storageAccounts: [
-      {
-        name: storageAccountName
-        accountName: storage.name
-        shareName: fileShareName
-        accessKey: listKeys(storage.id, storage.apiVersion).keys[0].value
-      }
-    ]
   }
 }
 
