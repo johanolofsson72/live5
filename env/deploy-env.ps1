@@ -1,5 +1,9 @@
 $rg = "live5rg"
 $location = "swedencentral"
+$vaultName = "live5vault"
+$storageAccount = "live5storage"
+$fileShare = "afs"
+$policyName = "live5-dailypolicy"
 
 Write-Host "🌍 Deploying base infra (env.bicep)..."
 az deployment group create `
@@ -10,19 +14,51 @@ az deployment group create `
 # Kontrollera om storagekontot redan är registrerat för backup
 $registered = az backup container list `
   --resource-group $rg `
-  --vault-name live5vault `
+  --vault-name $vaultName `
   --backup-management-type AzureStorage `
-  --query "[?friendlyName=='live5storage']" | ConvertFrom-Json
+  --query "[?friendlyName=='$storageAccount']" | ConvertFrom-Json
 
 if ($registered.Count -eq 0) {
-    Write-Host "📦 Registering 'live5storage' for backup in Recovery Vault..."
+    Write-Host "📦 Registering '$storageAccount' for backup in Recovery Vault..."
     az backup container register `
       --resource-group $rg `
-      --vault-name live5vault `
+      --vault-name $vaultName `
       --backup-management-type AzureStorage `
-      --storage-account live5storage
+      --storage-account $storageAccount
 } else {
-    Write-Host "✅ 'live5storage' is already registered for backup."
+    Write-Host "✅ '$storageAccount' is already registered for backup."
 }
 
-Write-Host "✅ Infrastrukturmiljö skapad!"
+# Hämta containerId för backup
+$containerId = az backup container list `
+  --resource-group $rg `
+  --vault-name $vaultName `
+  --backup-management-type AzureStorage `
+  --query "[?friendlyName=='$storageAccount'].id" -o tsv
+
+if (-not $containerId) {
+    Write-Error "❌ Kunde inte hämta containerId för $storageAccount – kan ej aktivera backup."
+    exit 1
+}
+
+# Kontrollera om backup redan är aktiverad för filresursen
+$existing = az backup item list `
+  --resource-group $rg `
+  --vault-name $vaultName `
+  --backup-management-type AzureStorage `
+  --workload-type AzureFileShare `
+  --query "[?properties.friendlyName=='$fileShare']" | ConvertFrom-Json
+
+if ($existing.Count -eq 0) {
+    Write-Host "🔐 Enabling backup for file share '$fileShare'..."
+    az backup protection enable-for-azurefileshare `
+      --resource-group $rg `
+      --vault-name $vaultName `
+      --storage-account $storageAccount `
+      --item-name $fileShare `
+      --policy-name $policyName
+} else {
+    Write-Host "✅ Backup för file share '$fileShare' är redan aktiverad."
+}
+
+Write-Host "✅ Infrastrukturmiljö + backup är klar!"
